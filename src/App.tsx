@@ -20,9 +20,13 @@ class App extends React.Component<AppProps> {
   getResults = () => {
     return (
       this.props.store.questions.map((q: Question) => {
+        const correct: Boolean = q.correctAnswer === q.userAnser;
         return (
-          <div>
-            <FontAwesomeIcon icon={q.correctAnswer === q.userAnser ? faCheckCircle : faTimes} />
+          <div className="resultsContainer">
+            <FontAwesomeIcon
+              icon={correct ? faCheckCircle : faTimes}
+              className={correct ? "icon green" : "icon red"}
+            />
             <p>{q.question}</p>
           </div>
         )
@@ -35,21 +39,45 @@ class App extends React.Component<AppProps> {
     if (this.props.store.currentQuestionIndex === undefined) {
       contentProps = {
         header: "Welcome to the Trivia Challenge!",
-        body: "You will be presented with 10 true or false questions - Can you score 100%?",
+        body: () => {
+          return(
+            <p>
+              You will be presented with 10 true or false questions - Can you score 100%?
+            </p>
+          )
+        },
         primaryButton: {id: "begin", label: "Begin", action: this.props.store.goToNextPage},
       }
     } else if (this.props.store.currentQuestionIndex >= this.props.store.questions.length) {
       contentProps = {
         header: `You scored ${this.props.store.questionsCorrect} / ${this.props.store.questions.length}`,
-        body: this.getResults(),
-        primaryButton: {id: "restart", label: "Play Again?", action: this.props.store.resetGame}
+        body: this.getResults,
+        primaryButton: {
+          id: "restart",
+          label: "Play Again?",
+          action: this.props.store.resetGame
+        }
       }
     } else {
       contentProps = {
         header: this.props.store.currentQuestion.category,
-        body: this.props.store.currentQuestion.question,
-        primaryButton: {id: "true", label: "True", action: () => this.props.store.answerQuestion(true)},
-        secondaryButton: {id: "false", label: "False", action: () => this.props.store.answerQuestion(false)}
+        body: () => {
+          return(
+            <p className="centerText">
+              {this.props.store.currentQuestion.question}
+            </p>
+          )
+        },
+        primaryButton: {
+          id: "true",
+          label: "True",
+          action: () => this.props.store.answerQuestion(true)
+        },
+        secondaryButton: {
+          id: "false",
+          label: "False",
+          action: () => this.props.store.answerQuestion(false)
+        }
       }
     }
 

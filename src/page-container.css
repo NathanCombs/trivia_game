@@ -1,0 +1,17 @@
+.pageContainer {
+  margin: 10px;
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  justify-content: space-around;
+  align-items: center;
+}
+
+.buttonContainer {
+  display: flex;
+  flex: 1;
+}
+
+.secondaryButton {
+  padding-right: 50px;
+}

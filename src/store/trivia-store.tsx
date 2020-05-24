@@ -1,5 +1,6 @@
 import { observable, computed } from 'mobx';
 import axios from 'axios'
+import decode from 'html-entities-decode';
 
 export interface Question {
   category: string,
@@ -10,7 +11,7 @@ export interface Question {
 
 enum apiState {"idle", "pending", "done", "error"}
 
-class TriviaStore {
+export class TriviaStore {
 
   @observable questions: Question[] = [];
   @observable currentQuestionIndex: number | undefined = undefined;
@@ -21,6 +22,9 @@ class TriviaStore {
     return (
       this.questions[this.currentQuestionIndex]
     )
+    else {
+      return {} as Question
+    }
   }
 
   @computed get questionsCorrect() {
@@ -39,7 +43,7 @@ class TriviaStore {
           const formattedData = apiData.map((data: any) => {
             return {
               category: data.category,
-              question: data.question,
+              question: decode(data.question),
               correctAnswer: Boolean(data.correct_answer)
             }
           })
@@ -77,7 +81,7 @@ class TriviaStore {
 
   resetGame =  () => {
     this.currentQuestionIndex = undefined;
-    this.getQuestions();  
+    this.getQuestions();
   }
 
 }

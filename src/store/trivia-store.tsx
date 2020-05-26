@@ -9,7 +9,7 @@ export interface Question {
   userAnser?: boolean
 }
 
-enum apiState {"idle", "pending", "done", "error"}
+export enum apiState {"idle", "pending", "done", "error"}
 
 export class TriviaStore {
 
@@ -39,7 +39,7 @@ export class TriviaStore {
       axios.get('https://opentdb.com/api.php?amount=10&difficulty=hard&type=boolean')
         .then(response => {
           //TODO: validate api data
-          const apiData: Object[] = response.data.results
+          const apiData: Object[] = response.data?.results || []
           const formattedData = apiData.map((data: any) => {
             return {
               category: data.category,
@@ -49,7 +49,12 @@ export class TriviaStore {
           })
           this.questions = formattedData;
         })
-        this.fetchState = apiState.done;
+        if (this.questions.length) {
+          this.fetchState = apiState.done;
+        }
+        else {
+          this.fetchState = apiState.error;
+        }
       }
       catch {
         this.fetchState = apiState.error;
@@ -57,7 +62,6 @@ export class TriviaStore {
   }
 
   goToNextPage = () => {
-    //TODO: implement api error, option to restart (using restart method from end of game)
     if (this.currentQuestionIndex === undefined) {
       this.currentQuestionIndex = 0;
     }

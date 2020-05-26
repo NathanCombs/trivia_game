@@ -7,14 +7,14 @@ export enum buttonLabel {'Begin', 'True', 'False', 'Play Again?'}
 
 export interface PageContainerProps {
   store?: any,
-  header: string,
+  header?: string,
   body: () => {},
-  primaryButton: ButtonProps,
+  primaryButton?: ButtonProps,
   secondaryButton?: ButtonProps
 }
 
 interface ButtonProps {
-  id: string,
+  id?: string,
   label: string,
   action: () => {}
 }
@@ -22,14 +22,27 @@ interface ButtonProps {
 @observer
 export class PageContainer extends React.PureComponent<PageContainerProps> {
 
+getPrimaryButton = () => {
+  if (this.props.primaryButton) {
+    return (
+      <Button
+        id={this.props.primaryButton.id}
+        variant="contained"
+        color="primary"
+        onClick={this.props.primaryButton.action}
+      >{this.props.primaryButton.label}</Button>
+    )
+  }
+}
+
   getSecondaryButton = () => {
     if (this.props.secondaryButton) {
       return (
         <div className="secondaryButton">
           <Button
+            id={this.props.secondaryButton.id}
             color="secondary"
             variant="contained"
-            id={this.props.secondaryButton.label}
             onClick={this.props.secondaryButton.action}
           >{this.props.secondaryButton.label}</Button>
         </div>
@@ -44,11 +57,7 @@ export class PageContainer extends React.PureComponent<PageContainerProps> {
         {this.props.body()}
         <div className="buttonContainer">
           {this.getSecondaryButton()}
-          <Button
-            variant="contained"
-            color="primary"
-            onClick={this.props.primaryButton.action}
-          >{this.props.primaryButton.label}</Button>
+          {this.getPrimaryButton()}
         </div>
       </div>
     )

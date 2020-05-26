@@ -19,3 +19,10 @@
 .red {
   color: red;
 }
+
+.appContainer {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 5px;
+}

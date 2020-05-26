@@ -58,7 +58,7 @@ describe("TriviaStore", () => {
     store.questions = stubQuestions;
     store.currentQuestionIndex = 0;
     store.answerQuestion(false);
-    expect(store.questions[0].userAnser).toBe(false);
+    expect(store.questions[0].userAnswer).toBe(false);
   });
 
   it("returns the number of questions answered correctly", () => {

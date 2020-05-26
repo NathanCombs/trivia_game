@@ -6,7 +6,7 @@ export interface Question {
   category: string,
   question: string,
   correctAnswer: boolean,
-  userAnser?: boolean
+  userAnswer?: boolean
 }
 
 export enum apiState {"idle", "pending", "done", "error"}
@@ -29,7 +29,7 @@ export class TriviaStore {
 
   @computed get questionsCorrect() {
     return (
-      this.questions.filter((q: Question) => q.correctAnswer === q.userAnser).length
+      this.questions.filter((q: Question) => q.correctAnswer === q.userAnswer).length
     )
   }
 
@@ -38,23 +38,23 @@ export class TriviaStore {
     try {
       axios.get('https://opentdb.com/api.php?amount=10&difficulty=hard&type=boolean')
         .then(response => {
-          //TODO: validate api data
           const apiData: Object[] = response.data?.results || []
           const formattedData = apiData.map((data: any) => {
             return {
               category: data.category,
               question: decode(data.question),
-              correctAnswer: Boolean(data.correct_answer)
+              correctAnswer: data.correct_answer === "True" ? true : false
             }
-          })
-          this.questions = formattedData;
-        })
-        if (this.questions.length) {
-          this.fetchState = apiState.done;
-        }
-        else {
-          this.fetchState = apiState.error;
-        }
+          });
+          if (formattedData) {
+            this.questions = formattedData;
+            this.fetchState = apiState.done;
+          }
+          else {
+            this.fetchState = apiState.error;
+          }
+        });
+
       }
       catch {
         this.fetchState = apiState.error;
@@ -74,7 +74,7 @@ export class TriviaStore {
     if (this.currentQuestionIndex !== undefined && this.currentQuestionIndex >= 0) {
       let updatedQuestions: Question[] = this.questions
       updatedQuestions[this.currentQuestionIndex] = {
-        ...updatedQuestions[this.currentQuestionIndex], userAnser: answer
+        ...updatedQuestions[this.currentQuestionIndex], userAnswer: answer
       }
       this.questions = updatedQuestions;
 

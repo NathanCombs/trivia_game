@@ -22,7 +22,7 @@ describe ("PageContainer", () => {
       <PageContainer
         header='Stub Header'
         body={() => {return(<p>Stub Content</p>)}}
-        primaryButton={{label: 'Stub Label', action: () => {}}}
+        primaryButton={{label: 'Stub Label'}}
       />
     );
     expect(wrapper.find('.buttonContainer').text()).toContain('Stub Label');
@@ -33,7 +33,7 @@ describe ("PageContainer", () => {
       <PageContainer
         header='Stub Header'
         body={() => {return(<p>Stub Content</p>)}}
-        secondaryButton={{label: 'Stub Label', action: () => {}}}
+        secondaryButton={{label: 'Stub Label'}}
       />
     );
     expect(wrapper.find('.buttonContainer').text()).toContain('Stub Label');

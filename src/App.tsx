@@ -1,8 +1,8 @@
 import React from 'react';
 import './App.css';
-import {PageContainer, PageContainerProps} from './page-container';
-import {triviaStore, Question, apiState} from './store/trivia-store';
-import {observer} from 'mobx-react'
+import { PageContainer, PageContainerProps } from './page-container';
+import { triviaStore, Question, apiState } from './store/trivia-store';
+import { observer } from 'mobx-react'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faCheckCircle, faTimes } from '@fortawesome/free-solid-svg-icons'
 import { CircularProgress } from '@material-ui/core';
@@ -21,7 +21,7 @@ class App extends React.Component<AppProps> {
   getResults = () => {
     return (
       this.props.store.questions.map((q: Question, index: number) => {
-        const correct: Boolean = q.correctAnswer === q.userAnser;
+        const correct: Boolean = q.correctAnswer === q.userAnswer;
         return (
           <div key={index} className="resultsContainer">
             <FontAwesomeIcon
@@ -47,9 +47,12 @@ class App extends React.Component<AppProps> {
             </p>
           )
         },
-        primaryButton: {label: "Begin", action: this.props.store.goToNextPage},
+        primaryButton: {
+          label: "Begin",
+          action: this.props.store.goToNextPage
+        },
       }
-    } else if (this.props.store.apiState === apiState.error) {
+    } else if (this.props.store.fetchState === apiState.error) {
       contentProps = {
         header: "Error",
         body: () => {return (<p>There was an error retreiving questions</p>)},
@@ -58,7 +61,7 @@ class App extends React.Component<AppProps> {
           action: this.props.store.resetGame
         }
       }
-    } else if (this.props.store.apiState === apiState.pending) {
+    } else if (this.props.store.fetchState === apiState.pending) {
       contentProps = {
         body: () => {return (<CircularProgress />)}
       }
@@ -102,7 +105,7 @@ class App extends React.Component<AppProps> {
 
   render() {
     return (
-      <div>
+      <div className="appContainer">
         {this.getContent()}
       </div>
     )

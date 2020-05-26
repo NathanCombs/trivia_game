@@ -1,7 +1,7 @@
-import * as React from 'react';
-import {observer} from 'mobx-react';
+import React from 'react';
+import { observer } from 'mobx-react';
 import './page-container.css';
-import {Button} from '@material-ui/core';
+import { Button } from '@material-ui/core';
 
 export enum buttonLabel {'Begin', 'True', 'False', 'Play Again?'}
 
@@ -16,7 +16,7 @@ export interface PageContainerProps {
 interface ButtonProps {
   id?: string,
   label: string,
-  action: () => {}
+  action?: () => {}
 }
 
 @observer
@@ -53,7 +53,7 @@ getPrimaryButton = () => {
   render() {
     return (
       <div className="pageContainer">
-        <h1>{this.props.header}</h1>
+        <h1 className="header">{this.props.header}</h1>
         {this.props.body()}
         <div className="buttonContainer">
           {this.getSecondaryButton()}

@@ -1,10 +1,15 @@
 .pageContainer {
-  margin: 10px;
   display: flex;
   flex: 1;
   flex-direction: column;
   justify-content: space-around;
   align-items: center;
+  margin: 50px;
+  padding: 25px;
+}
+
+.header {
+  text-align: center;
 }
 
 .buttonContainer {
